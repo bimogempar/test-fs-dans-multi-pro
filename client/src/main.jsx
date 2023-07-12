@@ -5,12 +5,14 @@ import Home from './pages/Home'
 import LayoutUser from './components/LayoutUser';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { DetailJob } from './pages/DetailJob';
 
 const router = createBrowserRouter([
     {
         element: <LayoutUser />,
         children: [
-            { path: '/', element: <Home /> }
+            { path: '/', element: <Home /> },
+            { path: '/job/:idJob', element: <DetailJob /> }
         ],
     },
     { path: '/login', element: <Login /> },

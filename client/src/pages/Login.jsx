@@ -15,7 +15,7 @@ const Login = () => {
     const [error, setError] = useState('');
 
     const handleSubmit = () => {
-        axios.post(`${API_URL}api/v1/login`, {
+        axios.post(`${API_URL}login`, {
             email,
             password,
         }).then(response => {

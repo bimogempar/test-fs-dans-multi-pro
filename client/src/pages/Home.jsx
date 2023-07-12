@@ -1,10 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useAppStore } from "../lib/zustand/app-store"
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
     const [user, setUser] = useAppStore(state => [state.user, state.setUser])
     const API_URL = import.meta.env.VITE_API_URL
+    const navigate = useNavigate()
+
     const [jobs, setJobs] = useState([])
     const [tempQuery, setTempQuery] = useState({
         page: 1,
@@ -27,8 +31,13 @@ const Home = () => {
         setQuery((prev) => ({ ...prev, page: prev.page + 1 }))
     }
 
+    const handleDetailPage = (data) => {
+        const idJob = data.id
+        navigate(`/job/${idJob}`, { state: data })
+    }
+
     useEffect(() => {
-        axios.get(`${API_URL}api/v1/list-jobs`, {
+        axios.get(`${API_URL}list-jobs`, {
             params: query,
             headers: {
                 Authorization: 'Bearer ' + user.access_token
@@ -98,8 +107,8 @@ const Home = () => {
                 <div className="p-2 text-2xl text-sky-600 font-bold">
                     {
                         jobs.length > 0 && jobs.map(obj => (
-                            <div key={obj.id} className="flex justify-between border-y-2 p-4">
-                                <div>
+                            <div key={obj.id} className="flex justify-between border-y-2 p-4" >
+                                <div onClick={() => handleDetailPage(obj)} className="cursor-pointer">
                                     <div>{obj.title}</div>
                                     <div className="text-sm text-gray-400">{obj.company} - <span className="text-green-600">{obj.type}</span></div>
                                 </div>
