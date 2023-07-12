@@ -3,9 +3,9 @@ import { useAppStore } from '../lib/zustand/app-store'
 import Navbar from "./Navbar"
 
 const LayoutUser = () => {
-    const username = useAppStore(state => state.username)
+    const user = useAppStore(state => state.user)
 
-    if (username === '') {
+    if (user === '') {
         return <Navigate to='/login' replace />
     }
 
@@ -13,7 +13,7 @@ const LayoutUser = () => {
         <div className="bg-gray-100 flex flex-col h-screen justify-between">
             <Navbar />
             <div className="mb-auto">
-                <Outlet user={username} />
+                <Outlet user={user} />
             </div>
         </div>
     )

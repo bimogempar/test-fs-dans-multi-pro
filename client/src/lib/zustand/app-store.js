@@ -2,8 +2,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 const AuthStore = set => ({
-    username: '',
-    setUsername: username => set({ username })
+    user: '',
+    setUser: user => set({ user })
 })
 
 export const useAppStore = create(persist(AuthStore, {

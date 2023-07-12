@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useAppStore } from "../lib/zustand/app-store"
 
 const Home = () => {
+    const [user, setUser] = useAppStore(state => [state.user, state.setUser])
+    const API_URL = import.meta.env.VITE_API_URL
     const [jobs, setJobs] = useState([])
     const [tempQuery, setTempQuery] = useState({
         page: 1,
+        full_time: false,
     })
     const [query, setQuery] = useState(tempQuery);
     const [hasMore, setHasMore] = useState(true);
@@ -24,10 +28,10 @@ const Home = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/v1/list-jobs', {
+        axios.get(`${API_URL}api/v1/list-jobs`, {
             params: query,
             headers: {
-                Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJlbWFpbCI6ImJpbW9nZW1wYXJAZ21haWwuY29tIn0sImlhdCI6MTY4OTE2NjQ3NiwiZXhwIjoxNjg5MTcwMDc2fQ.7AGov6XoD8uoqcjmS-ckrKwB0H1HzoFrNUxp9pZU-MQ'
+                Authorization: 'Bearer ' + user.access_token
             },
         })
             .then(res => {
@@ -56,6 +60,7 @@ const Home = () => {
             .catch(err => {
                 console.log('this error occurred', err)
                 setJobs([])
+                setUser('')
             })
     }, [query])
 
@@ -83,7 +88,7 @@ const Home = () => {
                 </div>
                 <div className="justify-self-start place-self-end space-x-6">
                     <label htmlFor="">Full Time Only</label>
-                    <input type="checkbox" />
+                    <input type="checkbox" defaultChecked={tempQuery.full_time} onChange={e => setTempQuery(prev => ({ ...prev, full_time: e.target.checked }))} />
                     <button onClick={handleSearch} className="bg-gray-500 p-3 text-white rounded-lg font-medium text-lg">Search</button>
                 </div>
             </div>
