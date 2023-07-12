@@ -1,10 +1,17 @@
-import LayoutUser from "../components/LayoutUser"
+import { useAppStore } from "../lib/zustand/app-store"
+import { shallow } from "zustand/shallow"
 
 const Home = () => {
+    const [username, setUsername] = useAppStore(state =>
+        [state.username, state.setUsername], shallow
+    )
+
     return (
-        <LayoutUser>
+        <div>
             <div className="bg-red-200">Home</div>
-        </LayoutUser>
+            <div>username : {username}</div>
+            <button onClick={() => setUsername('')}>Logout bro!</button>
+        </div>
     )
 }
 

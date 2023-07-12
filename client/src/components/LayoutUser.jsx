@@ -1,9 +1,17 @@
-// eslint-disable-next-line react/prop-types
-const LayoutUser = ({ children }) => {
+import { Navigate, Outlet } from "react-router-dom"
+import { useAppStore } from '../lib/zustand/app-store'
+
+const LayoutUser = () => {
+    const username = useAppStore(state => state.username)
+
+    if (username === '') {
+        return <Navigate to='/login' replace />
+    }
+
     return (
         <div>
             Navbar
-            <div>{children}</div>
+            <Outlet user={username} />
             Footer
         </div>
     )
