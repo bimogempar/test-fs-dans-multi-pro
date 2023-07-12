@@ -1,9 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const app = express();
-const router = require('../service/app/routes');
 
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.disable('etag');
 
 app.get('/', (req, res) => {
@@ -12,6 +14,7 @@ app.get('/', (req, res) => {
 	});
 })
 
+const router = require('../service/app/routes');
 app.use('/api/v1/', router)
 
 app.listen(3001, () => {
