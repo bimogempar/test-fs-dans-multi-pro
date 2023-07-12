@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom"
 import { useAppStore } from '../lib/zustand/app-store'
+import Navbar from "./Navbar"
 
 const LayoutUser = () => {
     const username = useAppStore(state => state.username)
@@ -9,10 +10,11 @@ const LayoutUser = () => {
     }
 
     return (
-        <div>
-            Navbar
-            <Outlet user={username} />
-            Footer
+        <div className="bg-gray-100 flex flex-col h-screen justify-between">
+            <Navbar />
+            <div className="mb-auto">
+                <Outlet user={username} />
+            </div>
         </div>
     )
 }
