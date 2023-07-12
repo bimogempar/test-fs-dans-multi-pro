@@ -26,4 +26,16 @@ const getListJobs = async (req, res) => {
     }
 }
 
-module.exports = { getListJobs };
+const getDetailJob = async (req, res) => {
+    const { idJob } = req.params;
+    var url = `http://dev3.dansmultipro.co.id/api/recruitment/positions/${idJob}`;
+    try {
+        const resp = await axios.get(url);
+        const { data } = resp;
+        res.status(200).json(apiRes(200, "Successfully found job", data));
+    } catch (error) {
+        res.status(200).json(apiRes(200, "Not found job", {}));
+    }
+}
+
+module.exports = { getListJobs, getDetailJob };
