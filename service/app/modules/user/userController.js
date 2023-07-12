@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const { apiRes } = require('../../helpers/traits');
 const { hashPassword, comparePassword } = require('../../helpers/bcrypt');
+const { generateToken } = require('../../helpers/jwt');
 const prisma = new PrismaClient();
 
 const getAllUsers = async (req, res) => {
@@ -23,7 +24,8 @@ const doLogin = async (req, res) => {
         const user = await prisma.user.findFirstOrThrow({ where: { email } });
         const decryptPass = await comparePassword(password, user.password)
         if (decryptPass) {
-            res.status(200).json(apiRes(200, "Success found user", user));
+            const access_token = generateToken({ user: { id: user.id, email: user.email } })
+            res.status(200).json(apiRes(200, "Success found user", { email: user.email, name: user.name, access_token }));
         } else {
             res.status(401).json(apiRes(401, "Wrong email or password", {}));
         }
